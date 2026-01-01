@@ -15,14 +15,17 @@ from ai_scientist.llm import (
 )
 
 from ai_scientist.tools.semantic_scholar import SemanticScholarSearchTool
+from ai_scientist.tools.local_data import LocalDataReadTool
 from ai_scientist.tools.base_tool import BaseTool
 
 # Create tool instances
 semantic_scholar_tool = SemanticScholarSearchTool()
+local_data_tool = LocalDataReadTool()
 
 # Define tools at the top of the file
 tools = [
     semantic_scholar_tool,
+    local_data_tool,
     {
         "name": "FinalizeIdea",
         "description": """Finalize your idea by providing the idea details.
@@ -72,7 +75,7 @@ ACTION:
 <The action to take, exactly one of {tool_names_str}>
 
 ARGUMENTS:
-<If ACTION is "SearchSemanticScholar", provide the search query as {{"query": "your search query"}}. If ACTION is "FinalizeIdea", provide the idea details as {{"idea": {{ ... }}}} with the IDEA JSON specified below.>
+<If ACTION is "SearchSemanticScholar", provide the search query as {{"query": "your search query"}}. If ACTION is "ReadLocalData", provide {{"path": "path/to/file", "max_chars": 4000, "max_rows": 20}}. If ACTION is "FinalizeIdea", provide the idea details as {{"idea": {{ ... }}}} with the IDEA JSON specified below.>
 
 If you choose to finalize your idea, provide the IDEA JSON in the arguments:
 
@@ -273,7 +276,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--model",
         type=str,
-        default="gpt-4o-2024-05-13",
+        default="gemini-3-pro-preview",
         choices=AVAILABLE_LLMS,
         help="Model to use for AI Scientist.",
     )
